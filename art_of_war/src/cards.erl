@@ -1,11 +1,17 @@
 -module(cards).
--export([make_deck/0]).
+-export([make_deck/0, shuffle/1]).
 -include_lib("eunit/include/eunit.hrl").
 
 make_deck() ->
     Values = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"],
     Suits = ["Clubs", "Diamonds", "Hearts", "Spades"],
     [{V, S} || V <- Values, S <- Suits].
+
+shuffle(List) -> shuffle(List, []).
+shuffle([], Acc) -> Acc;
+shuffle(List, Acc) ->
+  {Leading, [H | T]} = lists:split(random:uniform(length(List)) - 1, List),
+  shuffle(Leading ++ T, [H | Acc]).
 
 %%% TEST %%%
 make_deck_test() ->

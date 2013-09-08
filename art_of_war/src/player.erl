@@ -11,6 +11,9 @@ await(Cards) ->
         {divulge_cards, Pid} ->
             Pid ! {cards, Cards},
             await(Cards);
+        {play_card, Pid} when erlang:length(Cards) == 0 ->
+            Pid ! {card, out},
+            await(Cards);
         {play_card, Pid} ->
             [Card|RemainingCards] = Cards,
             Pid ! {card, Card},
@@ -30,7 +33,10 @@ playing_a_card_test() ->
     Player ! {receive_card, "A"},
     Player ! {receive_card, "B"},
     verify_next_card_played("A", Player),
-    verify_hand_is(["B"], Player).
+    verify_hand_is(["B"], Player),
+    verify_next_card_played("B", Player),
+    verify_hand_is([], Player),
+    verify_next_card_played(out, Player).
 
 verify_hand_is(ExpectedCards, Player) ->
     Player ! {divulge_cards, self()},

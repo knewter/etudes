@@ -1,4 +1,5 @@
 -module(cards).
+-export([make_deck/0]).
 -include_lib("eunit/include/eunit.hrl").
 
 make_deck() ->

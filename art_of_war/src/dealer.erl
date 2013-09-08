@@ -32,8 +32,11 @@ play(State=#state{players=[Alice,Bob], mode=pre_battle}) ->
     NewState = add_cards_to_state([AliceCard], [BobCard], State),
     determine_winner(NewState);
 play(State=#state{players=[Alice,Bob], mode=war}) ->
-    AliceCards = [play_card_from(Alice, State), play_card_from(Alice, State), play_card_from(Alice, State)],
-    BobCards = [play_card_from(Bob, State), play_card_from(Bob, State), play_card_from(Bob, State)],
+    AliceCardsRaw = [play_card_from(Alice, State), play_card_from(Alice, State), play_card_from(Alice, State)],
+    BobCardsRaw = [play_card_from(Bob, State), play_card_from(Bob, State), play_card_from(Bob, State)],
+    % Don't include 'out' cards in card lists
+    AliceCards = lists:filter(fun(Card) -> Card =/= out end, AliceCardsRaw),
+    BobCards = lists:filter(fun(Card) -> Card =/= out end, BobCardsRaw),
     NewState = add_cards_to_state(AliceCards, BobCards, State),
     determine_winner(NewState).
 
@@ -41,8 +44,8 @@ determine_winner(State=#state{players=[Alice,Bob]}) ->
     AliceCard = lists:last(State#state.alice_cards),
     BobCard = lists:last(State#state.bob_cards),
     if
-        AliceCard == out -> announce_winner(Alice, State);
-        BobCard == out -> announce_winner(Bob, State);
+        AliceCard == out -> announce_winner(Bob, State);
+        BobCard == out -> announce_winner(Alice, State);
         true -> case cards_equal(AliceCard, BobCard) of
                     true -> handle_tie(State);
                     false -> handle_winner(State)
@@ -99,6 +102,7 @@ cards_equal({First,_}, {Second,_}) ->
 
 value({Value,_}) ->
     if
+        Value == out -> 0;
         Value == "A" -> 1;
         Value == "J" -> 11;
         Value == "Q" -> 12;

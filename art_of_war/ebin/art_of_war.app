@@ -1,0 +1,8 @@
+{application,art_of_war,
+             [{description,"Art of War"},
+              {vsn,"1"},
+              {registered,[]},
+              {applications,[kernel,stdlib]},
+              {mod,{art_of_war,[]}},
+              {env,[]},
+              {modules,[cards]}]}.

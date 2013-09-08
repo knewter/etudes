@@ -1,0 +1,8 @@
+{application,cards,
+             [{description,"Cards"},
+              {vsn,"1"},
+              {registered,[]},
+              {applications,[kernel,stdlib]},
+              {mod,{cards,[]}},
+              {env,[]},
+              {modules,[cards]}]}.

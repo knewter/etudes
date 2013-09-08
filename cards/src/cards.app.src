@@ -1,12 +1,12 @@
-{application, etudes,
+{application, cards,
  [
-  {description, "Etudes"},
+  {description, "Cards"},
   {vsn, "1"},
   {registered, []},
   {applications, [
                   kernel,
                   stdlib
                  ]},
-  {mod, { etudes, []}},
+  {mod, { cards, []}},
   {env, []}
  ]}.
